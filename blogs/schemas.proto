@@ -1,0 +1,101 @@
+syntax = "proto3";
+option go_package = "github.com/rommms07/blogs/pb";
+option optimize_for = SPEED;
+
+package blogs;
+
+message Post {
+  uint32 id = 1;
+  string headline_text = 2;
+  string subject_text = 3;
+  uint32 user_id = 4;
+
+  repeated blogs.Comment comments = 5;
+  repeated string keywords = 6;
+
+  string content_url = 7;
+  string blog_url = 8;
+
+  repeated string multimedia_url = 9;
+  repeated blogs.Post revisions = 10;
+  optional blogs.PostState state = 11;
+}
+
+message PostState {
+  Stage stage = 1;
+  Status status = 2;
+
+  optional uint32 revised_at = 4;
+  optional uint32 archived_at = 5;
+  optional uint32 published_at = 6;
+
+  uint32 created_at = 7;
+  repeated blogs.React reacts = 8;
+
+  enum Stage {
+    S_WIP = 0;
+    S_REVIEW = 1;
+    S_PUB = 2;
+    S_REV = 3;
+  }
+
+  enum Status {
+    S_DRAFT = 0;
+    S_ARCHIVED = 1;
+    S_TRASH = 2;
+    S_VISIBLE_ON = 3;
+    S_VISIBLE_OFF = 4;
+  }
+}
+
+message Comment {
+  uint32 id = 1;
+  blogs.User user = 2;
+  string comment_text = 3; 
+  optional blogs.CommentState state = 4;
+  repeated blogs.Comment replies = 5;
+}
+
+message CommentState {
+  repeated blogs.React reacts = 1;
+  repeated blogs.User mentions = 2;
+  bool edited = 3;
+  uint32 created_at = 4;
+  optional uint32 edited_at = 5;
+}
+
+message React {
+  uint32 user_id = 1;
+  Type type = 2;
+
+  enum Type {
+    T_UPVOTE = 0;
+    T_DOWNVOTE = 1;
+    T_HEART = 2;
+    T_CONFUSED = 3;
+    T_LAUGH = 4;
+    T_SAD = 5;
+    T_HORRAY = 6;
+    T_CARE = 7;
+  }
+}
+
+message User {
+  uint32 id = 1;
+  string name = 2;
+  map<string, string> full_name = 3;
+  string email = 4;
+  Type type = 5; 
+  optional blogs.UserState state = 6;
+
+  enum Type {
+    T_NORMAL = 0;
+    T_AUTHOR = 1;
+  }
+}
+
+message UserState {
+  string picture_url = 1;
+  uint32 created_at = 2;
+  bool disabled = 3;
+}
