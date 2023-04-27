@@ -4,7 +4,7 @@ package payroll;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/romv7/payroll";
+option go_package = "github.com/romv7/payroll/komponan_pb";
 option optimize_for = SPEED;
 
 message Employee {
