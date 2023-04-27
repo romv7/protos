@@ -93,7 +93,7 @@ message User {
 	uint64 id = 1;
 	string ulid = 2;
 	string fname = 3;
-	optional string p_email = 4;
+	string p_email = 4;
 	string p_mobile = 5;
 	
 	google.protobuf.Timestamp bdate = 6;
