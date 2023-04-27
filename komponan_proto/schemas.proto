@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package payroll;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/romv7/payroll";
+option optimize_for = SPEED;
+
+message Employee {
+	enum EmploymentKind {
+		E_FULL = 0;
+		E_PART = 1;
+		E_TEMP = 2;
+		E_CONT = 3;
+		E_SEA  = 4;
+		E_FREE = 5;
+	}
+	
+	enum PresenceKind {
+		PK_PRESENT = 0;
+		PK_LEAVE = 1;
+		PK_ABSENT = 2;
+		PK_OUT = 3;
+		PK_EARLY = 4;
+		PK_TARDY = 5;
+	}
+	
+	uint64 user_id = 1;
+	
+	EmploymentKind e_type = 2;
+	PresenceKind p_type = 3;
+	
+	optional string w_email = 4;
+	optional string w_mobile = 5;
+	
+	optional google.protobuf.Timestamp hired_at = 6;
+	optional google.protobuf.Timestamp exited_at = 7;
+	optional payroll.Schedule e_sched = 8;
+}
+
+message Schedule {
+	enum ShiftType {
+		ST_DAY = 0;
+		ST_NIGHT = 1;
+		ST_SPLIT = 2;
+		ST_ONCALL = 3;
+		ST_EXTENDED = 5;
+	}
+	
+	enum WorkType {
+		WT_ONSITE = 0;
+		WT_ONLINE = 1;
+	}
+	
+	uint64 id = 1;
+	string ulid = 2;
+	
+	ShiftType s_type = 3;
+	WorkType t_type = 4;
+	
+	google.protobuf.Timestamp sched_in = 5;
+	google.protobuf.Timestamp sched_out = 6;
+	
+	int32 d_flag = 7;
+	Schedule c_sched = 8;
+}
+
+message Timestamp {
+	string ulid = 1;
+	uint64 user_id = 2;
+	uint64 schedule_id = 3;
+	
+	payroll.Employee.PresenceKind p_type = 4;
+
+	google.protobuf.Timestamp in_at = 5;
+	google.protobuf.Timestamp out_at = 6;
+}
+
+message User {
+
+	enum Gender {
+		MALE = 0;
+		FEMALE = 1;
+		NEUTRAL = 2;
+	}
+
+	enum PresenceKind {
+		PK_ONLINE = 0;
+		PK_OFFLINE = 1;
+	}
+	
+	uint64 id = 1;
+	string ulid = 2;
+	string fname = 3;
+	optional string p_email = 4;
+	string p_mobile = 5;
+	
+	google.protobuf.Timestamp bdate = 6;
+	google.protobuf.Timestamp created_at = 7;
+	
+	Gender gender = 8;
+	PresenceKind state = 9;
+}
