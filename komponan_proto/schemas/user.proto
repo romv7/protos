@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package payroll;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/romv7/payroll";
+option optimize_for = SPEED;
+
+message User {
+
+	enum Gender {
+		MALE = 0;
+		FEMALE = 1;
+		NEUTRAL = 2;
+	}
+
+	enum PresenceKind {
+		PK_ONLINE = 0;
+		PK_OFFLINE = 1;
+	}
+	
+	uint64 id = 1;
+	string ulid = 2;
+	string fname = 3;
+	optional string p_email = 4;
+	string p_mobile = 5;
+	
+	google.protobuf.Timestamp bdate = 6;
+	google.protobuf.Timestamp created_at = 7;
+	
+	Gender gender = 8;
+	PresenceKind state = 9;
+}
