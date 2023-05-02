@@ -1,36 +1,36 @@
 syntax = "proto3";
-option go_package = "github.com/rommms07/blogs/pb";
-option optimize_for = SPEED;
 
 package blogs;
 
+option go_package = "github.com/romv7/blogs/pb";
+option optimize_for = SPEED;
+
+import "google/protobuf/timestamp.proto";
+
 message Post {
   uint32 id = 1;
-  string headline_text = 2;
-  string subject_text = 3;
-  uint32 user_id = 4;
+  string uuid = 2;
+  string headline_text = 3;
+  string summary_text = 4;
+  User user = 5;
 
-  repeated blogs.Comment comments = 5;
-  repeated string keywords = 6;
+  repeated blogs.Comment comments = 6;
+  repeated string tags = 7;
 
-  string content_url = 7;
-  string blog_url = 8;
-
-  repeated string multimedia_url = 9;
-  repeated blogs.Post revisions = 10;
-  optional blogs.PostState state = 11;
+  optional blogs.Post original = 8;
+  optional blogs.PostState state = 9;
 }
 
 message PostState {
   Stage stage = 1;
   Status status = 2;
 
-  optional uint32 revised_at = 4;
-  optional uint32 archived_at = 5;
-  optional uint32 published_at = 6;
+  optional google.protobuf.Timestamp revised_at = 4;
+  optional google.protobuf.Timestamp archived_at = 5;
+  optional google.protobuf.Timestamp published_at = 6;
 
-  uint32 created_at = 7;
-  repeated blogs.React reacts = 8;
+  google.protobuf.Timestamp created_at = 7;
+  blogs.Reacts reacts = 8;
 
   enum Stage {
     S_WIP = 0;
@@ -48,45 +48,56 @@ message PostState {
   }
 }
 
-message Comment {
+message Comment { 
   uint32 id = 1;
-  blogs.User user = 2;
-  string comment_text = 3; 
-  optional blogs.CommentState state = 4;
-  repeated blogs.Comment replies = 5;
+  string uuid = 2;
+  blogs.User user = 3;
+  string comment_text = 4; 
+  optional blogs.CommentState state = 5;
+  repeated blogs.Comment replies = 6;
+
+  TargetType target_type = 7;
+  
+  oneof target {
+    Comment t_comment = 8;
+    Post t_post = 9;
+    User t_user = 10;
+  }
+
+  enum TargetType {
+    TT_USER = 0;
+    TT_COMMENT = 1;
+    TT_POST = 2; 
+  }
 }
 
 message CommentState {
-  repeated blogs.React reacts = 1;
+  blogs.Reacts reacts = 1;
   repeated blogs.User mentions = 2;
   bool edited = 3;
-  uint32 created_at = 4;
-  optional uint32 edited_at = 5;
+  google.protobuf.Timestamp created_at = 4;
+  optional google.protobuf.Timestamp edited_at = 5;
 }
 
-message React {
-  uint32 user_id = 1;
-  Type type = 2;
+message Reacts {
+  uint64 likeCount = 1;
+  uint64 confusedCount = 2;
+  uint64 loveCount = 3;
+  uint64 laughCount = 4;
+  uint64 sadCount = 5;
+  uint64 careCount = 6;
 
-  enum Type {
-    T_UPVOTE = 0;
-    T_DOWNVOTE = 1;
-    T_HEART = 2;
-    T_CONFUSED = 3;
-    T_LAUGH = 4;
-    T_SAD = 5;
-    T_HORRAY = 6;
-    T_CARE = 7;
-  }
+  repeated blogs.User users = 7;
 }
 
 message User {
   uint32 id = 1;
-  string name = 2;
-  map<string, string> full_name = 3;
-  string email = 4;
-  Type type = 5; 
-  optional blogs.UserState state = 6;
+  string uuid = 2;
+  string name = 3;
+  string full_name = 4;
+  string email = 5;
+  Type type = 6; 
+  optional blogs.UserState state = 7;
 
   enum Type {
     T_NORMAL = 0;
@@ -95,7 +106,8 @@ message User {
 }
 
 message UserState {
-  string picture_url = 1;
-  uint32 created_at = 2;
+  google.protobuf.Timestamp created_at = 1;
+  optional google.protobuf.Timestamp updated_at = 2;
   bool disabled = 3;
+  bool u_verified = 4;
 }

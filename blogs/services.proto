@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rommms07/blogs/pb";
+option go_package = "github.com/romv7/blogs/pb";
 option optimize_for = SPEED;
 
 import "schemas.proto";
