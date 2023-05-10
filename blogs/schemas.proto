@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package blogs;
 
-option go_package = "github.com/romv7/blogs/pb";
+option go_package = "github.com/romv7/blogs/internal/pb";
 option optimize_for = SPEED;
 
 import "google/protobuf/timestamp.proto";
@@ -15,9 +15,9 @@ message Post {
   User user = 5;
 
   repeated blogs.Comment comments = 6;
-  repeated string tags = 7;
+  blogs.Tags tags = 7;
 
-  optional blogs.Post original = 8;
+  optional blogs.Post prev = 8;
   optional blogs.PostState state = 9;
 }
 
@@ -52,31 +52,33 @@ message Comment {
   uint32 id = 1;
   string uuid = 2;
   blogs.User user = 3;
-  string comment_text = 4; 
+  blogs.CommentText comment_text = 4; 
   optional blogs.CommentState state = 5;
   repeated blogs.Comment replies = 6;
 
   TargetType target_type = 7;
   
   oneof target {
-    Comment t_comment = 8;
-    Post t_post = 9;
-    User t_user = 10;
+    Comment t_comment = 8 [json_name = "-"];
+    Post t_post = 9 [json_name = "-"];
+    User t_user = 10 [json_name = "-"];
   }
 
   enum TargetType {
     TT_USER = 0;
     TT_COMMENT = 1;
-    TT_POST = 2; 
+    TT_POST = 2;
   }
+}
+
+message CommentText {
+  string data = 1;
 }
 
 message CommentState {
   blogs.Reacts reacts = 1;
-  repeated blogs.User mentions = 2;
-  bool edited = 3;
-  google.protobuf.Timestamp created_at = 4;
-  optional google.protobuf.Timestamp edited_at = 5;
+  google.protobuf.Timestamp created_at = 3;
+  optional google.protobuf.Timestamp edited_at = 4;
 }
 
 message Reacts {
@@ -88,6 +90,10 @@ message Reacts {
   uint64 careCount = 6;
 
   repeated blogs.User users = 7;
+}
+
+message Tags {
+  repeated string data = 1;
 }
 
 message User {

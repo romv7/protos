@@ -1,0 +1,55 @@
+syntax = "proto3";
+option go_package = "github.com/romv7/blogs/internal/pb";
+option optimize_for = SPEED;
+
+import "schemas.proto";
+
+package blogs;
+
+message BlogService_NewBlogPost_Params {
+  blogs.User user = 1;
+  string headline_text = 2;
+  string summary_text = 3;
+  repeated string tags = 4;
+}
+
+message BlogService_SaveBlogPost_Params {
+  blogs.Post post = 1;
+}
+
+message BlogService_SaveBlogPost_Response {
+
+}
+
+message BlogService_DeleteBlogPost_Params {
+  blogs.Post post = 1;
+}
+
+message BlogService_DeleteBlogPost_Response {
+  
+}
+
+message BlogService_NewComment_Params {}
+
+message BlogService_SaveComment_Params {}
+
+message BlogService_SaveComment_Response {}
+
+message BlogService_DeleteComment_Params {}
+
+message BlogService_DeleteComment_Response {}
+
+message BlogService_ReplyToComment_Params {}
+
+message BlogService_ReplyToComment_Response {}
+
+service BlogService {
+  rpc NewBlogPost(BlogService_NewBlogPost_Params) returns (blogs.Post) {}
+  rpc SaveBlogPost(BlogService_SaveBlogPost_Params) returns (BlogService_SaveBlogPost_Response) {}
+  rpc DeleteBlogPost(BlogService_DeleteBlogPost_Params) returns (BlogService_DeleteBlogPost_Response) {}
+
+  rpc NewComment(BlogService_NewComment_Params) returns (blogs.Comment) {}
+  rpc SaveComment(BlogService_SaveComment_Params) returns (BlogService_SaveComment_Response) {}
+  rpc DeleteComment(BlogService_DeleteComment_Params) returns (BlogService_DeleteComment_Response) {}
+  rpc ReplyToComment(BlogService_ReplyToComment_Params) returns (BlogService_ReplyToComment_Response) {}
+}

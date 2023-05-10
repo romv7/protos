@@ -1,0 +1,36 @@
+syntax = "proto3";
+option go_package = "github.com/romv7/blogs/internal/pb";
+option optimize_for = SPEED;
+
+import "schemas.proto";
+
+package blogs;
+
+message UserService_New_Params {
+  string name = 1;
+  string full_name = 2;
+  string email = 3;
+  blogs.User.Type type = 4;
+}
+
+message UserService_Save_Params {
+  blogs.User user = 1;
+}
+
+message UserService_Save_Response {
+
+}
+
+message UserService_Delete_Params {
+  blogs.User user = 1;
+}
+
+message UserService_Delete_Response {
+  
+}
+
+service UserService {
+  rpc New (UserService_New_Params) returns (blogs.User) {}
+  rpc Save (UserService_Save_Params) returns (UserService_Save_Response) {}
+  rpc Delete (UserService_Delete_Params) returns (UserService_Delete_Response) {}
+}
