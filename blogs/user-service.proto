@@ -17,20 +17,21 @@ message UserService_Save_Params {
   blogs.User user = 1;
 }
 
-message UserService_Save_Response {
-
-}
+message UserService_Save_Response {}
 
 message UserService_Delete_Params {
   blogs.User user = 1;
 }
 
-message UserService_Delete_Response {
-  
-}
+message UserService_Delete_Response {}
 
 service UserService {
+  // Instantiate a new User using the provided details by the end user of the RPC service.
   rpc New (UserService_New_Params) returns (blogs.User) {}
+
+  // Persists the user to any persistent storage defined in the internal service.
   rpc Save (UserService_Save_Params) returns (UserService_Save_Response) {}
+
+  // Destructive RPC command, removes a user from the internal persistent storage.
   rpc Delete (UserService_Delete_Params) returns (UserService_Delete_Response) {}
 }

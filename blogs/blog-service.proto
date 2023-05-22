@@ -8,48 +8,77 @@ package blogs;
 
 message BlogService_NewBlogPost_Params {
   blogs.User user = 1;
+  
   string headline_text = 2;
   string summary_text = 3;
+  
   repeated string tags = 4;
+  repeated string images = 5;
+  repeated string attachments = 6;
+  repeated string refs = 7;
+
+  string content = 8; 
 }
 
 message BlogService_SaveBlogPost_Params {
-  blogs.Post post = 1;
+  blogs.User user = 1;
+  blogs.Post post = 2;
 }
 
-message BlogService_SaveBlogPost_Response {
-
-}
+message BlogService_SaveBlogPost_Response {}
 
 message BlogService_DeleteBlogPost_Params {
   blogs.Post post = 1;
 }
 
-message BlogService_DeleteBlogPost_Response {
-  
+message BlogService_DeleteBlogPost_Response {}
+
+message BlogService_GetBlogPost_Params {
+  blogs.User user = 1;
 }
 
-message BlogService_NewComment_Params {}
+message BlogService_NewComment_Params {
+  blogs.User user = 1;
+  string comment_text = 2;
+  blogs.Comment.TargetType target_type = 3;
+  string target_uuid = 4;
+}
 
-message BlogService_SaveComment_Params {}
+message BlogService_SaveComment_Params {
+  blogs.Comment comment = 1;
+}
 
 message BlogService_SaveComment_Response {}
 
-message BlogService_DeleteComment_Params {}
+message BlogService_DeleteComment_Params {
+  blogs.Comment comment = 1;
+}
 
 message BlogService_DeleteComment_Response {}
 
-message BlogService_ReplyToComment_Params {}
-
-message BlogService_ReplyToComment_Response {}
-
 service BlogService {
+  // Using the provided BlogService_NewBlogPost_Params, it creates a new blog post from the
+  // argument. Take note that this does not totally persist the data to any persistence storage.
+  // That is the job of the rpc SaveBlogPost!
   rpc NewBlogPost(BlogService_NewBlogPost_Params) returns (blogs.Post) {}
+
+  // Persist the provided post inthe BlogService_SaveBlogPost_params argument to any persistent
+  // storage.
   rpc SaveBlogPost(BlogService_SaveBlogPost_Params) returns (BlogService_SaveBlogPost_Response) {}
+
+  // Destructive! Removes a blog post from any persistent storage in the internal service.
   rpc DeleteBlogPost(BlogService_DeleteBlogPost_Params) returns (BlogService_DeleteBlogPost_Response) {}
 
+  // Gets the specific blog post identified by the argument passed to the GetBlogPost from the persistent storage.
+  rpc GetBlogPost(BlogService_GetBlogPost_Params) returns (blogs.Post) {}
+
+  // Creates a new comment for the target uuid provided as an argument. Like NewBlogPost this does
+  // not totally save the new comment to any storage.
   rpc NewComment(BlogService_NewComment_Params) returns (blogs.Comment) {}
+
+  // Commits the comment passed as an argument to the BlogService_SaveComment_Params to any persistent storage.
   rpc SaveComment(BlogService_SaveComment_Params) returns (BlogService_SaveComment_Response) {}
+
+  // Destructive! Removes the comment from any persistence storage in thte internal service. (Sounds similar to the DeleteBlogPost!)
   rpc DeleteComment(BlogService_DeleteComment_Params) returns (BlogService_DeleteComment_Response) {}
-  rpc ReplyToComment(BlogService_ReplyToComment_Params) returns (BlogService_ReplyToComment_Response) {}
 }

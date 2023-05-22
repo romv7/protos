@@ -1,0 +1,28 @@
+
+# enumeration types
+enum PostStage {
+  S_WIP
+  S_REVIEW
+  S_PUB
+  S_REV
+}
+
+enum PostStatus {
+  S_DRAFT
+  S_ARCHIVED
+  S_TRASH
+  S_VISIBLE
+  S_HIDDEN
+}
+
+enum CommentTargetType {
+  TT_USER
+  TT_COMMENT
+  TT_POST
+}
+
+enum UserType {
+  T_NORMAL
+  T_AUTHOR
+}
+

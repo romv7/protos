@@ -1,0 +1,55 @@
+
+type User {
+  id: ID!
+  uuid: String!
+  name: String!
+  fullName: String!
+  email: String!
+  type: UserType!
+  createdAt: Date!
+  updatedAt: Date
+  isDisabled: Boolean
+  isVerified: Boolean
+}
+
+type Post {
+  id: ID!
+  uuid: String!
+  headlineText: String!
+  summaryText: String!
+  user: User!
+  comments: [Comment!]!
+  tags: [String!]!
+  attachments: [String!]!
+  refs: [String!]!
+  content: String!
+  reacts: Reacts!
+  stage: PostStage!
+  status: PostStatus!
+  createdAt: Date!
+  revisedAt: Date!
+  archivedAt: Date
+  publishedAt: Date
+}
+
+union CommentTarget = Post | Comment | User
+
+type Comment {
+  id: ID!
+  uuid: String!
+  user: User!
+  commentText: String!
+  replies: [Comment!]!
+  targetType: CommentTargetType!
+  target: CommentTarget!
+  reacts: Reacts!
+}
+
+type Reacts {
+  likeCount: Int
+  confusedCount: Int
+  loveCount: Int
+  laughCount: Int
+  sadCount: Int
+  careCount: Int
+}

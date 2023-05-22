@@ -8,17 +8,22 @@ option optimize_for = SPEED;
 import "google/protobuf/timestamp.proto";
 
 message Post {
-  uint32 id = 1;
+  uint64 id = 1;
   string uuid = 2;
   string headline_text = 3;
   string summary_text = 4;
-  User user = 5;
+  blogs.User user = 5;
 
   repeated blogs.Comment comments = 6;
   blogs.Tags tags = 7;
 
   optional blogs.Post prev = 8;
   optional blogs.PostState state = 9;
+
+  repeated string attachments = 11;
+  repeated string refs = 12;
+
+  string content = 13;
 }
 
 message PostState {
@@ -43,13 +48,13 @@ message PostState {
     S_DRAFT = 0;
     S_ARCHIVED = 1;
     S_TRASH = 2;
-    S_VISIBLE_ON = 3;
-    S_VISIBLE_OFF = 4;
+    S_VISIBLE = 3;
+    S_HIDDEN = 4;
   }
 }
 
 message Comment { 
-  uint32 id = 1;
+  uint64 id = 1;
   string uuid = 2;
   blogs.User user = 3;
   blogs.CommentText comment_text = 4; 
@@ -59,9 +64,9 @@ message Comment {
   TargetType target_type = 7;
   
   oneof target {
-    Comment t_comment = 8 [json_name = "-"];
-    Post t_post = 9 [json_name = "-"];
-    User t_user = 10 [json_name = "-"];
+    Comment t_comment = 8;
+    Post t_post = 9;
+    User t_user = 10;
   }
 
   enum TargetType {
@@ -97,18 +102,26 @@ message Tags {
 }
 
 message User {
-  uint32 id = 1;
+  uint64 id = 1;
   string uuid = 2;
   string name = 3;
   string full_name = 4;
   string email = 5;
   Type type = 6; 
   optional blogs.UserState state = 7;
+  string storagePath = 8;
+  string bio = 9;
+  string altName = 10;
+  map<string, SocialLinks> socialLinks = 11;
 
   enum Type {
     T_NORMAL = 0;
     T_AUTHOR = 1;
   }
+}
+
+message SocialLinks {
+  repeated string data = 1;
 }
 
 message UserState {
