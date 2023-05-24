@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package internal;
+
+message MxAlias {
+	uint64 id = 1;
+	string src = 2;
+	string domain_ri = 3;
+}
+
+message MxAliases {
+	repeated MxAlias data = 1;
+}

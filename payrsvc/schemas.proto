@@ -7,6 +7,9 @@ import "google/protobuf/timestamp.proto";
 option go_package = "github.com/romv7/payrsvc/pb";
 option optimize_for = SPEED;
 
+/*
+ * Employee
+ */
 message Employee {
 	enum EmploymentKind {
 		E_FULL = 0;
@@ -25,6 +28,15 @@ message Employee {
 		PK_EARLY = 4;
 		PK_TARDY = 5;
 	}
+
+	enum TerminationKind {
+		TK_RESIGN = 0;
+		TK_FIRED = 1;
+		TK_LAID = 2;
+		TK_RETIRE = 3;
+		TK_CONTRACT = 4;
+		TK_MUTUAL = 5;
+	}
 	
 	uint64 user_id = 1;
 	
@@ -37,8 +49,23 @@ message Employee {
 	optional google.protobuf.Timestamp hired_at = 6;
 	optional google.protobuf.Timestamp exited_at = 7;
 	optional payroll.Schedule e_sched = 8;
+
+	google.protobuf.Timestamp updated_at = 9;
+
+	optional TerminationKind t_type = 10;
 }
 
+/*
+ * Employees
+ *
+ */
+message Employees {
+	repeated Employee items = 1;
+}
+
+/*
+ * Schedule
+ */
 message Schedule {
 	enum ShiftType {
 		ST_DAY = 0;
@@ -61,11 +88,22 @@ message Schedule {
 	
 	google.protobuf.Timestamp sched_in = 5;
 	google.protobuf.Timestamp sched_out = 6;
+	google.protobuf.Timestamp updated_at = 7;
 	
-	int32 d_flag = 7;
-	Schedule c_sched = 8;
+	int32 d_flag = 8;
+	Schedule c_sched = 9;
 }
 
+/*
+ * Schedules
+ */
+message Schedules {
+	repeated Schedule items = 1;
+}
+
+/*
+ * Timestamp
+ */
 message Timestamp {
 	string ulid = 1;
 	uint64 user_id = 2;
@@ -77,6 +115,49 @@ message Timestamp {
 	google.protobuf.Timestamp out_at = 6;
 }
 
+/*
+ * Timestamps
+ */
+message Timestamps {
+	repeated Timestamp items = 1;
+}
+
+
+/*
+ * Leave
+ */
+message Leave {
+	enum LeaveKind {
+		L_VACATON = 0;
+		L_SICK = 1;
+		L_PARENTAL = 2;
+		L_BEREAVEMENT = 3;
+		L_PERSONAL = 4;
+		L_MILITARY = 5;
+		L_RELIGIOUS = 6;
+		L_OTHER = 7;
+	}
+	
+	string ulid = 1;
+	uint64 user_id = 2;
+	
+	LeaveKind l_type = 3;
+	optional string l_message = 4;
+	
+	google.protobuf.Timestamp leave_at = 5;
+	google.protobuf.Timestamp returned_at = 6;
+}
+
+/*
+ * Leaves
+ */
+message Leaves {
+	repeated Leave items = 1;
+}
+
+/*
+ * User
+ */
 message User {
 
 	enum Gender {
@@ -93,12 +174,62 @@ message User {
 	uint64 id = 1;
 	string ulid = 2;
 	string fname = 3;
-	string p_email = 4;
-	string p_mobile = 5;
+	string p_email = 5;
+	string p_mobile = 6;
 	
-	google.protobuf.Timestamp bdate = 6;
-	google.protobuf.Timestamp created_at = 7;
+	google.protobuf.Timestamp bdate = 7;
+	google.protobuf.Timestamp updated_at = 8;
 	
-	Gender gender = 8;
-	PresenceKind state = 9;
+	Gender gender = 9;
+	PresenceKind state = 10;
+}
+
+/*
+ * Users
+ */
+message Users {
+	repeated User items = 1;
+}
+
+/*
+ * Team
+ */
+message Team {
+	
+}
+
+/*
+ * Teams
+ */
+message Teams {
+	repeated Team items = 1;
+}
+
+/*
+ * Place
+ */
+message Place {
+
+}
+
+/*
+ * Places
+ */
+message Places {
+	repeated Place items = 1;
+}
+
+
+/*
+ * Scratch
+ */
+message Scratch {
+
+}
+
+/*
+ * Scratches
+ */
+message Scratches {
+	repeated Scratch items = 1;
 }

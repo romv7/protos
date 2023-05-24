@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package internal;
+
+message Mailbox {
+	uint64 owner_id = 1;
+	string mbox_ident = 2;
+	string domain_ri = 3;
+}
+
+message Mailboxes {
+	repeated Mailbox data = 1;
+}

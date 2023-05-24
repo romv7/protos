@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package payroll;
+
+import "schemas.proto";
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/romv7/payrsvc/pb";
+option optimize_for = SPEED;
+
+service UserService {
+  rpc New(payroll.User) returns (google.protobuf.Any) {}
+  rpc Prune(payroll.User) returns (google.protobuf.Any) {}
+  rpc Update(payroll.User) returns (google.protobuf.Any) {}
+  rpc Get(google.protobuf.Any) returns (payroll.User) {}
+
+  rpc BatchGet(google.protobuf.Any) returns (payroll.Users) {}
+  rpc BatchCreate(payroll.Users) returns (google.protobuf.Any) {}
+  rpc BatchPrune(payroll.Users) returns (google.protobuf.Any) {}
+
+  rpc UpdatePicture(payroll.User) returns (google.protobuf.Any) {}
+  rpc UpdateProfile(payroll.User) returns (google.protobuf.Any) {}
+  rpc UpdatePresence(payroll.User) returns (google.protobuf.Any) {}
+}
+
+service TimestampService {
+
+}
+
+service ScheduleService {
+
+}
+
+service EmployeeService {
+  
+}
+
+service TeamService {
+
+}
+
+service PlaceService {
+
+}
+
+service ScratchService {
+
+}

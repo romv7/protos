@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package internal;
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+	uint64 id = 1;
+	string ulid = 2;
+	int32 sys_uid = 3;
+	int32 sys_gid = 4;
+	string uname = 5;
+	string pcode = 6;
+	string pphrase = 7;
+	
+	google.protobuf.Timestamp updated_at = 8;
+}
+
+message Users {
+  repeated internal.User data = 1;
+}
