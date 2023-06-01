@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message Lead {
+  uint64 id = 1;
+  string fullName = 2;
+  string email = 3;
+  string mobile = 4;
+  string fbname = 5;
+
+  google.protobuf.Timestamp birthdate = 10;
+}

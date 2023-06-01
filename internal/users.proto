@@ -13,7 +13,8 @@ message User {
 	string pcode = 6;
 	string pphrase = 7;
 	
-	google.protobuf.Timestamp updated_at = 8;
+	google.protobuf.Timestamp created_at = 8;
+	google.protobuf.Timestamp updated_at = 9;
 }
 
 message Users {

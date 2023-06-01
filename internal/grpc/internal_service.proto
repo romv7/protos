@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package internal_grpc;
+
+service InternalService {
+
+  // Creates a new domain that is permitted by the Postfix for receiving and sending emails.
+  rpc CreateDomain() returns () {}
+
+
+}

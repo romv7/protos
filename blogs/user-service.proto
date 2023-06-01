@@ -2,7 +2,7 @@ syntax = "proto3";
 option go_package = "github.com/romv7/blogs/internal/pb";
 option optimize_for = SPEED;
 
-import "schemas.proto";
+import "blogs/schemas.proto";
 
 package blogs;
 
